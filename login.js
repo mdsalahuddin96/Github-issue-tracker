@@ -7,6 +7,12 @@ function login(){
     }
     else{
         alert('Username or password is incorrect!');
+        return;
     }
 }
 document.getElementById('sign-in-btn').addEventListener('click',login)
+document.getElementById('password-input').addEventListener('keydown',(event)=>{
+    if(event.key==='Enter'){
+        login();
+    }
+})
