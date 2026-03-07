@@ -1,3 +1,22 @@
 *{
     font-family: "Geist", sans-serif;
 }
+.active{
+    background-color: #4A00FF;
+    color: white;
+    border: none;
+}
+.high{
+    color: #EF4444;
+    background-color: #FEECEC;
+}
+.medium{
+    color: #F59E0B;
+    background-color: #FFF6D1;
+}
+.low{
+    color: #9CA3AF;
+    background-color: #EEEFF2;
+}
+
+/* text-red-600 bg-[#FEECEC] px-4 py-[6px] rounded-full */
