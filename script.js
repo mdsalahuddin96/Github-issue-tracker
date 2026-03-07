@@ -1,6 +1,7 @@
 const cardContainer=document.getElementById('card-container');
 const totalIssue=document.getElementById('total-issue');
-let openIssues=[];
+let openIssues;
+let closedIssues;
 function displayLabels(labels){
     const labelsElm=labels.map(label=>`<span class="text-[12px] font-medium rounded-sm bg-[#eedf57]">${label.toUpperCase()}</span>`);
     return labelsElm.join(" ");
@@ -49,24 +50,15 @@ const loadAllIssues=async(id)=>{
     const url=`https://phi-lab-server.vercel.app/api/v1/lab/issues`;
     const res=await fetch(url)
     const data=await res.json();
-    displayAllIssue(data.data,id="all-btn");
+    openIssues=data.data.filter(issue=>issue.status==='open');
+    closedIssues=data.data.filter(issue=>issue.status=='closed');
+    displayAllIssue(data.data, id="all-btn");
 }
 const loadOpenIssue=async(id)=>{
-    const url=`https://phi-lab-server.vercel.app/api/v1/lab/issues`;
-    const res=await fetch(url)
-    const data=await res.json();
-    openIssues=data.data.filter(issue=>issue.status==='open');
-    displayAllIssue(openIssues,id)
-    
+    displayAllIssue(openIssues,id)  
 }
 const loadClosedIssue=async(id)=>{
-    const url=`https://phi-lab-server.vercel.app/api/v1/lab/issues`;
-    const res=await fetch(url)
-    const data=await res.json();
-    const closedIssues=data.data.filter(issue=>issue.status==='closed');
     displayAllIssue(closedIssues,id)
-    
 }
 loadAllIssues()
 
-console.log(openIssues);
