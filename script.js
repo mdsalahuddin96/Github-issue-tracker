@@ -69,7 +69,7 @@ function showModalDetails(issue){
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <p class="text-[#64748B] text-[16px]">Assignee:</p>
-                            <p class="text-[16px] font-semibold">${issue.assignee}</p>
+                            <p class="text-[16px] font-semibold">${issue.assignee?issue.assignee:'Not Found'}</p>
                         </div>
                         <div>
                             <p class="text-[#64748B] text-[16px]">Priority:</p>
