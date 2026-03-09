@@ -4,8 +4,17 @@ const spinner=document.getElementById('spinner');
 const detailsModal=document.getElementById('details_modal');
 const modalBox=document.getElementById('modal-box');
 const searchInput=document.getElementById('search-input');
+const searchBtn=document.getElementById('search-btn');
+const labelClass={
+    "bug":"high",
+    "help wanted":"medium",
+    'enhancement':'text-[#00A96E] bg-[#DEFCE8]',
+    'good first issue':'text-purple-600 bg-[#eac3fa]',
+    'documentation':'low'
+}
+
 function displayLabels(labels){
-    const labelsElm=labels.map(label=>`<span class="text-[12px] font-medium rounded-sm bg-[#eedf57]">${label.toUpperCase()}</span>`);
+    const labelsElm=labels.map(label=>`<span class="text-[12px] font-medium px-2 py-[2px] rounded-full ${labelClass[label]}">${label.toUpperCase()}</span>`);
     return labelsElm.join(" ");
 }
 function displayAllIssue(issues){
@@ -22,11 +31,12 @@ function displayAllIssue(issues){
                     <div class="space-y-2 mt-2">
                         <h2 class="font-semibold text-sm">${issue.title}</h2>
                         <p class="text-[#64748B] text-[12px] line-clamp-2">${issue.description}</p>
-                        ${displayLabels(issue.labels)}
+                        <div class="flex flex-wrap gap-1">${displayLabels(issue.labels)}</div>
+                        
                     </div>
                     
                     <div class="mt-6 space-y-2">
-                        <p class="text-[#64748B] text-[12px]"># ${issue.author}</p>
+                        <p class="text-[#64748B] text-[12px]">#${issue.id} ${issue.author}</p>
                         <p class="text-[#64748B] text-[12px]">${new Date(issue.createdAt).toLocaleDateString()}</p>
                     </div>`
         
@@ -120,6 +130,16 @@ cardContainer.addEventListener('click',(event)=>{
         loadModalDetails(selectedCard.id)
     }
 })
+
+searchBtn.addEventListener('click',()=>{
+    const inputValue=searchInput.value;
+    removeActiveClass();
+    manageSpinner(true);
+    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${inputValue}`)
+    .then(res=>res.json())
+    .then(data=>displayAllIssue(data.data))
+    searchInput.value=""
+})
 searchInput.addEventListener('keydown',(event)=>{
     const inputValue=searchInput.value;
     if(event.key==='Enter'){
@@ -128,6 +148,7 @@ searchInput.addEventListener('keydown',(event)=>{
         fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${inputValue}`)
         .then(res=>res.json())
         .then(data=>displayAllIssue(data.data))
+        searchInput.value=""
     }
 })
 loadAllIssues()
